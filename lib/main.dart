@@ -28,6 +28,8 @@ class _GameScreenState extends State<GameScreen> {
     super.initState();
   }
 
+final ValueNotifier<int> counter = ValueNotifier(1);
+
 @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -42,13 +44,18 @@ Widget build(BuildContext context) {
               color: Colors.black54,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Text(
-              'Score: 1',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                ),
+            child: ValueListenableBuilder<int>(
+                valueListenable: counter,
+                builder: (context, score, child) {
+                  return Text(
+                    'Score: $score',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ),
           ),
