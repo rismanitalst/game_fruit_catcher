@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../components/basket.dart';
 
+
 class FruitCatcherGame extends FlameGame {
   @override
   Color backgroundColor() {
