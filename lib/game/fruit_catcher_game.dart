@@ -9,9 +9,9 @@ import 'components/fruit.dart';
 
 class FruitCatcherGame extends FlameGame {
 
-  final Random random = Random();
-
   int score = 0;
+  late TextComponent scoreText;
+  final Random random = Random();
 
   @override
   Color backgroundColor() => const Color(0xFF87CEEB);
@@ -20,14 +20,28 @@ class FruitCatcherGame extends FlameGame {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // spawn basket
     final basket = Basket(
       position: Vector2(size.x / 2, size.y - 100),
     );
 
     add(basket);
 
-    // timer spawn fruit
+    scoreText = TextComponent(
+      text: 'Score: 0',
+      position: Vector2(10, 10),
+      anchor: Anchor.topLeft,
+      priority: 10,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+
+    add(scoreText);
+
     add(
       TimerComponent(
         period: 1.5,
@@ -50,6 +64,6 @@ class FruitCatcherGame extends FlameGame {
 
   void incrementScore() {
     score++;
-    debugPrint('Score: $score');
+    scoreText.text = 'Score: $score';
   }
 }
