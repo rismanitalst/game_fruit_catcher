@@ -1,93 +1,86 @@
 import 'dart:math';
-
-import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-
 import '../fruit_catcher_game.dart';
-
 import 'basket.dart';
 
-enum FruitType { apple, banana, orange }
+enum FruitType { apple, banana, orange, strawberry }
 
 class Fruit extends PositionComponent
     with HasGameReference<FruitCatcherGame>, CollisionCallbacks {
-
-
   final FruitType type;
-  final double speed;
+  final double fallSpeed = 200;
+  final Random random = Random();
 
-  Fruit({
-    required Vector2 position,
-    required this.type,
-    this.speed = 150,
-  }) : super(
-          position: position,
-          size: Vector2.all(30),
-          anchor: Anchor.center,
-        );
+  Fruit({super.position})
+      : type = FruitType.values[Random().nextInt(FruitType.values.length)],
+        super(size: Vector2.all(40));
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    // hitbox mengikuti ukuran buah
-    add(
-      CircleHitbox()
-        ..collisionType = CollisionType.active,
-    );
+    anchor = Anchor.center;
+    add(CircleHitbox());
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    // buah jatuh ke bawah
-    position.y += speed * dt;
+    position.y += fallSpeed * dt;
 
-    // hapus kalau keluar layar
-    if (position.y > game.size.y + size.y) {
+    // 🔥 pakai game, bukan gameRef
+    if (position.y > game.size.y + 50) {
       removeFromParent();
     }
   }
 
   @override
-  void onCollision(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
     if (other is Basket) {
-      game.incrementScore();
+      game.incrementScore(); // 🔥 pakai game
       removeFromParent();
     }
   }
 
   @override
   void render(Canvas canvas) {
-    final paint = Paint()..color = _getColor();
+    super.render(canvas);
+
+    final paint = Paint()..style = PaintingStyle.fill;
+
+    switch (type) {
+      case FruitType.apple:
+        paint.color = Colors.red;
+        break;
+      case FruitType.banana:
+        paint.color = Colors.yellow;
+        break;
+      case FruitType.orange:
+        paint.color = Colors.orange;
+        break;
+      case FruitType.strawberry:
+        paint.color = Colors.pink;
+        break;
+    }
 
     canvas.drawCircle(
       Offset(size.x / 2, size.y / 2),
       size.x / 2,
       paint,
     );
-  }
 
-  Color _getColor() {
-    switch (type) {
-      case FruitType.apple:
-        return Colors.red;
-      case FruitType.banana:
-        return Colors.yellow;
-      case FruitType.orange:
-        return Colors.orange;
-    }
-  }
+    final shinePaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.3)
+      ..style = PaintingStyle.fill;
 
-  static FruitType randomType() {
-    final random = Random();
-    return FruitType.values[random.nextInt(FruitType.values.length)];
+    canvas.drawCircle(
+      Offset(size.x / 2 - 5, size.y / 2 - 5),
+      size.x / 5,
+      shinePaint,
+    );
   }
 }
