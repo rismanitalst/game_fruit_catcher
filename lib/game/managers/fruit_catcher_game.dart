@@ -22,7 +22,7 @@ class FruitCatcherGame extends FlameGame
     add(basket);
   }
 
-  // ✅ dipanggil oleh Fruit saat collision
+  //dipanggil Fruit saat collision
   void incrementScore() {
     score++;
     debugPrint('Score: $score');
