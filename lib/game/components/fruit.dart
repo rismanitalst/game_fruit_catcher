@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+
 enum FruitType { apple, banana, orange }
 
 class Fruit extends PositionComponent {
