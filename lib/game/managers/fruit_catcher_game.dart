@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../components/basket.dart';
 
-class FruitCatcherGame extends FlameGame {
+class FruitCatcherGame extends FlameGame
+    with HasCollisionDetection {
+
+  int score = 0;
 
   @override
   Color backgroundColor() => const Color(0xFF87CEEB);
@@ -17,5 +20,11 @@ class FruitCatcherGame extends FlameGame {
     );
 
     add(basket);
+  }
+
+  // ✅ dipanggil oleh Fruit saat collision
+  void incrementScore() {
+    score++;
+    debugPrint('Score: $score');
   }
 }
