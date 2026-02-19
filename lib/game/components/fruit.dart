@@ -4,7 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import 'package:flutter/material.dart';
 
-import '../managers/fruit_catcher_game.dart';
+import '../fruit_catcher_game.dart';
 
 import 'basket.dart';
 

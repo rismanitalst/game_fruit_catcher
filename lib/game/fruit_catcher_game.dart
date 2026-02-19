@@ -4,8 +4,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import '../components/basket.dart';
-import '../components/fruit.dart';
+import 'components/basket.dart';
+import 'components/fruit.dart';
 
 class FruitCatcherGame extends FlameGame {
 
