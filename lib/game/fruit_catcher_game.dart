@@ -9,10 +9,16 @@ import 'components/fruit.dart';
 
 class FruitCatcherGame extends FlameGame {
 
+  // game state
   int score = 0;
+  bool isGameOver = false;
+
   late TextComponent scoreText;
+  late TimerComponent fruitSpawner;
+
   final Random random = Random();
 
+  // background
   @override
   Color backgroundColor() => const Color(0xFF87CEEB);
 
@@ -20,12 +26,13 @@ class FruitCatcherGame extends FlameGame {
   Future<void> onLoad() async {
     await super.onLoad();
 
+    // basket
     final basket = Basket(
       position: Vector2(size.x / 2, size.y - 100),
     );
-
     add(basket);
 
+    // score UI
     scoreText = TextComponent(
       text: 'Score: 0',
       position: Vector2(10, 10),
@@ -42,16 +49,20 @@ class FruitCatcherGame extends FlameGame {
 
     add(scoreText);
 
-    add(
-      TimerComponent(
-        period: 1.5,
-        repeat: true,
-        onTick: spawnFruit,
-      ),
+    // fruit spawner timer
+    fruitSpawner = TimerComponent(
+      period: 1.5,
+      repeat: true,
+      onTick: spawnFruit,
     );
+
+    add(fruitSpawner);
   }
 
+  // spawn fruit
   void spawnFruit() {
+    if (isGameOver) return;
+
     final xPosition = random.nextDouble() * size.x;
 
     final fruit = Fruit(
@@ -62,7 +73,10 @@ class FruitCatcherGame extends FlameGame {
     add(fruit);
   }
 
+  // sistem skor
   void incrementScore() {
+    if (isGameOver) return;
+
     score++;
     scoreText.text = 'Score: $score';
   }
