@@ -5,7 +5,7 @@ import 'managers/audio_manager.dart';
 class FruitCatcherGame extends FlameGame {
  
  @override
- Color backgroundColor() => const Color(0xFF87CEEB); // skyblue
+ Color backgroundColor() => const Color.fromARGB(255, 83, 164, 81); // matcha uwuw
 final ValueNotifier<int> scoreNotifier = ValueNotifier<int>(0);
 
  @override
